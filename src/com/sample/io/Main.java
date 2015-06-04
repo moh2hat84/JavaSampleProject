@@ -11,7 +11,8 @@ public class Main {
 		Service service = new Service();
 		List<WaterPoint> waterPoints = service.readInputStream(URL);
 		System.out.println(waterPoints.size());
-		Map<String, CommunityWaterPoints> waterPointsMap = service.getInfrastructureResources(waterPoints);
-		service.getWaterPointsStatistics(waterPointsMap);
+		List<Community> waterPointsList = service.getInfrastructureResources(waterPoints);
+		WaterPointStatistics stats = service.getWaterPointsStatistics(waterPointsList);
+		System.out.println(stats);
 	}
 }

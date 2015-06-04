@@ -12,8 +12,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Service {
-
-	private Map<String, CommunityWaterPoints> communityWaterPointsMap = new HashMap<String, CommunityWaterPoints>();
 	
 	public List<WaterPoint> readInputStream(String urlString){
 		List<WaterPoint> response = null;
@@ -34,53 +32,53 @@ public class Service {
 		return response;
 	}
 	
-	public Map<String, CommunityWaterPoints> getInfrastructureResources(List<WaterPoint> waterPoints){
+	public List<Community> getInfrastructureResources(List<WaterPoint> waterPoints){
+		List<Community> communities = new ArrayList<Community>();
+		Map<String, Community> communityWaterPointsMap = new HashMap<String, Community>();
 		
 		for(WaterPoint waterPoint : waterPoints) {
 			String key = waterPoint.getCommunitiesVillages();
 			
 			if (communityWaterPointsMap.containsKey(key)) {
 				
-				CommunityWaterPoints communityWaterPoints = communityWaterPointsMap.get(key);
-				communityWaterPoints.getWaterPoints().add(waterPoint);
+				Community community = communityWaterPointsMap.get(key);
+				community.getWaterPoints().add(waterPoint);
 				boolean waterPointIsBroken = waterPointIsBroken(waterPoint);
-				communityWaterPoints.setBrokenWaterPoints(communityWaterPoints.getBrokenWaterPoints() + (waterPointIsBroken ? 1 : 0));
+				community.setBrokenWaterPoints(waterPointIsBroken ? 1 : 0);
 				
 			}else {
 				
-				CommunityWaterPoints communityWaterPoints = new CommunityWaterPoints();
-				communityWaterPoints.setCumunityName(key);
-				communityWaterPoints.getWaterPoints().add(waterPoint);
+				Community community = new Community();
+				community.setName(key);
+				community.getWaterPoints().add(waterPoint);
 				boolean waterPointIsBroken = waterPointIsBroken(waterPoint);
-				communityWaterPoints.setBrokenWaterPoints(communityWaterPoints.getBrokenWaterPoints() + (waterPointIsBroken ? 1 : 0));
-				communityWaterPointsMap.put(key, communityWaterPoints);
+				community.setBrokenWaterPoints(community.getBrokenWaterPoints() + (waterPointIsBroken ? 1 : 0));
+				communityWaterPointsMap.put(key, community);
 				
 			}
 		}
 		
-		return communityWaterPointsMap;
+		communities.addAll(communityWaterPointsMap.values());
+		// sort the communities based on broken water points
+		Collections.sort(communities);
+		
+		return communities;
 	}
 	
-	public WaterPointStatistics getWaterPointsStatistics(Map<String, CommunityWaterPoints> waterPointsMap){
+	public WaterPointStatistics getWaterPointsStatistics(List<Community> waterPointsList){
 		
 		WaterPointStatistics waterPointStatistics = new WaterPointStatistics();
 		
 		int functionalWaterPoints = 0;
 		Map<String, Integer> numberOfWaterPointsPerCommunity = new HashMap<String, Integer>();
-		Map<String, String> communityRanking = new HashMap<String, String>();
+		List<Community> communityRanking = new ArrayList<Community>();
 		
-		Collection<CommunityWaterPoints> wps = waterPointsMap.values();
-		List<CommunityWaterPoints> list = new ArrayList<CommunityWaterPoints>(wps);
-		Collections.sort(list);
-		
-		for (CommunityWaterPoints entry : list) {
-			CommunityWaterPoints communityWaterPoints = waterPointsMap.get(entry.getCumunityName());
+		for (Community community : waterPointsList) {
+			functionalWaterPoints += community.getFunctionalPoints();
+			numberOfWaterPointsPerCommunity.put(community.getName(), community.getWaterPoints().size());
+			communityRanking.add(community);
 			
-			functionalWaterPoints += communityWaterPoints.getFunctionalPoints();
-			numberOfWaterPointsPerCommunity.put(communityWaterPoints.getCumunityName(), communityWaterPoints.getWaterPoints().size());
-			communityRanking.put(communityWaterPoints.getCumunityName(), communityWaterPoints.getBrokenWaterPointsPercentage() + " %" );
-			
-			System.out.println(communityWaterPoints.getCumunityName() + " : " + communityWaterPoints.getBrokenWaterPointsPercentage() + "%" );
+			System.out.println(community.getName() + " : " + community.getBrokenWaterPointsPercentage() + "%" );
 		}
 		
 		waterPointStatistics.setFunctionalWaterPoints(functionalWaterPoints);
@@ -92,14 +90,6 @@ public class Service {
 	
 	public boolean waterPointIsBroken(WaterPoint waterPoint){
 		return !waterPoint.getWaterFunctioning().equalsIgnoreCase("yes"); // Yes / No values expected
-	}
-	
-	public Map<String, CommunityWaterPoints> getCommunityWaterPointsMap() {
-		return communityWaterPointsMap;
-	}
-
-	public void setCommunityWaterPointsMap(Map<String, CommunityWaterPoints> communityWaterPointsMap) {
-		this.communityWaterPointsMap = communityWaterPointsMap;
 	}
 	
 }
