@@ -3,7 +3,7 @@ package com.sample.io;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommunityWaterPoints implements Comparable<CommunityWaterPoints>{
+public class CommunityWaterPoints{
 
 	private String cumunityName;
 	private List<WaterPoint> waterPoints = new ArrayList<WaterPoint>();
@@ -31,20 +31,6 @@ public class CommunityWaterPoints implements Comparable<CommunityWaterPoints>{
 
 	public void setBrokenWaterPoints(int brokenWaterPoints) {
 		this.brokenWaterPoints = brokenWaterPoints;
-	}
-
-	@Override
-	public int compareTo(CommunityWaterPoints comunityWaterPoints) {
-		return Float.valueOf(comunityWaterPoints.getBrokenWaterPointsPercentage()).compareTo(Float.valueOf(this.getBrokenWaterPointsPercentage()));
-	}
-
-	public int getFunctionalPoints() {
-		return getWaterPoints().size() - getBrokenWaterPoints();
-	}
-
-	public Float getBrokenWaterPointsPercentage() {
-		float value =  ((float)getBrokenWaterPoints() * 100) / getWaterPoints().size();
-		return Float.valueOf(String.format("%.2f", value)); // round up to 2 dp
 	}
 	
 }

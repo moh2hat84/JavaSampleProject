@@ -1,20 +1,32 @@
 package com.sample.io.unittests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import com.sample.io.Service;
+import com.sample.io.WaterPoint;
 
 public class ServiceTest {
 
 	@Test
-	public void testWithInputFile1() {
+	public void testWaterPointIsBrokenTrue() {
 		Service service = new Service();
-		//service.readInputStream(urlString)
-		  
-		//assertEquals(service.getMostFiledHostsLine(), expectedMostFiledHostsLine);
+		
+		WaterPoint waterPoint = new WaterPoint();
+		waterPoint.setWaterFunctioning("no");
+		
+		assertTrue(service.waterPointIsBroken(waterPoint));
 	}
 	
-	
+	@Test
+	public void testWaterPointIsBrokenFalse() {
+		Service service = new Service();
+		
+		WaterPoint waterPoint = new WaterPoint();
+		waterPoint.setWaterFunctioning("yes");
+		
+		assertFalse(service.waterPointIsBroken(waterPoint));
+	}
 }
