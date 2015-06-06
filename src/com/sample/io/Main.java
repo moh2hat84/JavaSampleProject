@@ -1,6 +1,5 @@
 package com.sample.io;
 
-import java.util.List;
 
 public class Main {
 	
@@ -8,10 +7,7 @@ public class Main {
 
 	public static void main(String[] args){
 		Service service = new Service();
-		List<WaterPoint> waterPoints = service.readInputStream(URL);
-		System.out.println(waterPoints.size());
-		List<Community> waterPointsList = service.getInfrastructureResources(waterPoints);
-		WaterPointStatistics stats = service.getWaterPointsStatistics(waterPointsList);
-		System.out.println(stats);
+		WaterPointStatistics statistics = service.calculate(URL);
+		System.out.println(statistics);
 	}
 }

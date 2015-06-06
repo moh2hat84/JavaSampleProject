@@ -12,6 +12,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Service {
 	
+	public WaterPointStatistics calculate(String url){
+		List<WaterPoint> waterPoints = this.readInputStream(url);
+		List<Community> waterPointsList = this.getInfrastructureResources(waterPoints);
+		WaterPointStatistics stats = this.getWaterPointsStatistics(waterPointsList);
+		return stats;
+	} 
+	
 	public List<WaterPoint> readInputStream(String urlString){
 		List<WaterPoint> response = null;
 		
