@@ -20,13 +20,13 @@ public class WaterPointStatistics {
 		for (Map.Entry<String, Integer> entry : numberOfWaterPointsPerCommunity.entrySet()) {
 			String community = entry.getKey();
 			Integer numberOfWaterPoints = entry.getValue();
-			sb.append("\t" + community +" : " + String.valueOf(numberOfWaterPoints) + "\n");
+			sb.append(community +" : " + String.valueOf(numberOfWaterPoints) + "\n");
 		}
 		
 		sb.append("The rank for each community by the percentage of broken water points: \n");
 		for (Community community : communityRanking) {
 			String percentageOfBrokenWaterPoints = community.getBrokenWaterPointsPercentage().toString();
-			sb.append("\t" + community.getName() +" : " + percentageOfBrokenWaterPoints + "\n");
+			sb.append(community.getName() +" : " + percentageOfBrokenWaterPoints + "\n");
 		}
 		
 		return sb.toString();
@@ -44,8 +44,7 @@ public class WaterPointStatistics {
 		return numberOfWaterPointsPerCommunity;
 	}
 	
-	public void setNumberOfWaterPointsPerCommunity(
-			Map<String, Integer> numberOfWaterPointsPerCommunity) {
+	public void setNumberOfWaterPointsPerCommunity(Map<String, Integer> numberOfWaterPointsPerCommunity) {
 		this.numberOfWaterPointsPerCommunity = numberOfWaterPointsPerCommunity;
 	}
 	

@@ -9,6 +9,12 @@ public class Community implements Comparable<Community>{
 	private List<WaterPoint> waterPoints = new ArrayList<WaterPoint>();
 	private int brokenWaterPoints = 0;
 	
+	public void addWaterPoint(WaterPoint waterPoint){
+		waterPoints.add(waterPoint);
+		boolean waterPointIsBroken = Service.waterPointIsBroken(waterPoint);
+		brokenWaterPoints += waterPointIsBroken ? 1 : 0;
+	}
+	
 	public String getName() {
 		return name;
 	}

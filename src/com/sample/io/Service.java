@@ -41,17 +41,13 @@ public class Service {
 			if (communityWaterPointsMap.containsKey(key)) {
 				
 				Community community = communityWaterPointsMap.get(key);
-				community.getWaterPoints().add(waterPoint);
-				boolean waterPointIsBroken = waterPointIsBroken(waterPoint);
-				community.setBrokenWaterPoints(waterPointIsBroken ? 1 : 0);
+				community.addWaterPoint(waterPoint);
 				
 			}else {
 				
 				Community community = new Community();
 				community.setName(key);
-				community.getWaterPoints().add(waterPoint);
-				boolean waterPointIsBroken = waterPointIsBroken(waterPoint);
-				community.setBrokenWaterPoints(community.getBrokenWaterPoints() + (waterPointIsBroken ? 1 : 0));
+				community.addWaterPoint(waterPoint);
 				communityWaterPointsMap.put(key, community);
 				
 			}
@@ -77,7 +73,7 @@ public class Service {
 			numberOfWaterPointsPerCommunity.put(community.getName(), community.getWaterPoints().size());
 			communityRanking.add(community);
 			
-			System.out.println(community.getName() + " : " + community.getBrokenWaterPointsPercentage() + "%" );
+			//System.out.println(community.getName() + " : " + community.getBrokenWaterPointsPercentage() + "%" );
 		}
 		
 		waterPointStatistics.setFunctionalWaterPoints(functionalWaterPoints);
@@ -87,7 +83,7 @@ public class Service {
 		return waterPointStatistics;
 	}
 	
-	public boolean waterPointIsBroken(WaterPoint waterPoint){
+	public static boolean waterPointIsBroken(WaterPoint waterPoint){
 		return !waterPoint.getWaterFunctioning().equalsIgnoreCase("yes"); // Yes / No values expected
 	}
 	

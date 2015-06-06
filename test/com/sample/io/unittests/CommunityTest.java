@@ -2,9 +2,6 @@ package com.sample.io.unittests;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
 
 import com.sample.io.Community;
@@ -26,14 +23,10 @@ public class CommunityTest {
 		WaterPoint waterPoint4 = new WaterPoint();
 		waterPoint4.setWaterFunctioning("no");
 		
-		List<WaterPoint> waterPoints = new ArrayList<WaterPoint>();
-		waterPoints.add(waterPoint1);
-		waterPoints.add(waterPoint2);
-		waterPoints.add(waterPoint3);
-		waterPoints.add(waterPoint4);
-		
-		community.setWaterPoints(waterPoints);
-		community.setBrokenWaterPoints(1);
+		community.addWaterPoint(waterPoint1);
+		community.addWaterPoint(waterPoint2);
+		community.addWaterPoint(waterPoint3);
+		community.addWaterPoint(waterPoint4);
 		
 		assertEquals(community.getFunctionalPoints(), 3);
 	}
@@ -52,16 +45,56 @@ public class CommunityTest {
 		WaterPoint waterPoint4 = new WaterPoint();
 		waterPoint4.setWaterFunctioning("no");
 		
-		List<WaterPoint> waterPoints = new ArrayList<WaterPoint>();
-		waterPoints.add(waterPoint1);
-		waterPoints.add(waterPoint2);
-		waterPoints.add(waterPoint3);
-		waterPoints.add(waterPoint4);
-		
-		community.setWaterPoints(waterPoints);
-		community.setBrokenWaterPoints(1);
+		community.addWaterPoint(waterPoint1);
+		community.addWaterPoint(waterPoint2);
+		community.addWaterPoint(waterPoint3);
+		community.addWaterPoint(waterPoint4);
 		
 		assertEquals(community.getBrokenWaterPointsPercentage(), Float.valueOf(25));
 	}
 
+	@Test
+	public void testAddWaterPoint_WaterGetsAdded(){
+		Community community = new Community();
+		community.setName("Test Commuity");
+		
+		WaterPoint waterPoint1 = new WaterPoint();
+		waterPoint1.setWaterFunctioning("yes");
+		
+		assertEquals(community.getWaterPoints().size(), 0);
+		
+		community.addWaterPoint(waterPoint1);
+		
+		assertEquals(community.getWaterPoints().size(), 1);
+	}
+	
+	@Test
+	public void testAddWaterPoint_BrokenWaterGetsAdded(){
+		Community community = new Community();
+		community.setName("Test Commuity");
+		
+		WaterPoint waterPoint1 = new WaterPoint();
+		waterPoint1.setWaterFunctioning("no");
+		
+		assertEquals(community.getBrokenWaterPoints(), 0);
+		
+		community.addWaterPoint(waterPoint1);
+		
+		assertEquals(community.getBrokenWaterPoints(), 1);
+	}
+	
+	@Test
+	public void testAddWaterPoint_NonBrokenWaterGetsAdded(){
+		Community community = new Community();
+		community.setName("Test Commuity");
+		
+		WaterPoint waterPoint1 = new WaterPoint();
+		waterPoint1.setWaterFunctioning("yes");
+		
+		assertEquals(community.getBrokenWaterPoints(), 0);
+		
+		community.addWaterPoint(waterPoint1);
+		
+		assertEquals(community.getBrokenWaterPoints(), 0);
+	}
 }
